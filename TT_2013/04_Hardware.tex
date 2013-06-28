@@ -2,86 +2,37 @@
 
 \subsection{The AM chip}
 
-\subsection{Trigger sectors definition}
+\subsection{Trigger sectors}
 
-\subsubsection{Dividing the tracking system into sectors}
+\subsubsection{Definition}
 
-\noindent Before defining more precisely the pattern itself, one could introduce a very simple way to reduce the bank size, based on cyclindrical symmetry of the system. Tracker barrels and endcaps could indeed be azimuthally divided into symmetric sectors. The first stage to reduce the bank size will therefore be to generate banks for sectors, not for the whole detector. This doesn't mean that the banks will be exactly identical for all sectors, however, this will reduce the size of the banks to store.
+\noindent The trigger definition is driven by two concurent constraints. As we will see later, the number of patterns will strongly depend on the sector size itself. It is therefore tempting to divide the detector into very small sectors, in order to work with small, easier to handle, banks. On the other hand, however, the minimal sector size will be geometrically constrained by the track trigger requirements. The system should indeed be able to detect tracks over a given $p_T$ threshold. The minimal sector should thus be able to entirely contain such tracks. For example, with a threshold of $2~GeV/c$, the minimal sector size is approximatively $18^{o}$.
 
-\noindent It is tempting, at this stage, to divide the detector into very small sectors, in order to work with smaller banks. However, the minimal sector size is geometrically constrained by the track trigger requirements. The system should indeed be able to detect tracks over a given $p_T$ threshold (in our case $2~GeV/c$). The minimal sector should thus entirely contain such tracks. The maximum angular deviation of the particles we are looking for is easy to compute.
-\begin{figure}[ht!]
-\centering
-\includegraphics[width=0.6\columnwidth]{Plots/Deviations.eps}
-\caption{Particle deviation in the different layers.}
-\label{fig:Deviat}
-\end{figure}
-
-\noindent Using the notations of Fig.~\ref{fig:Deviat}, and considering that the particle has a curvature $R_c$, and is tangent to the x-axis at origin, one easily gets the coordinates $(x_i,y_i)$ of the points $A_i$, where the particle is crossing the layers (see Sec.~\label{sec:STUB}). The angular deviation is then given by:
-\begin{equation}
-\theta_i = atan \frac{y_i}{x_i} = atan \left(\frac{R_i}{2R_c}(1+\frac{R_i^2}{8R_c^2})\right)
-\end{equation}  
-
-\noindent For a particle with  $p_{T} = 2~GeV/c$ in a magnetic field $B_0 = 3.8~T$, the curvature radius is $R_c = 1.75~m$. From there, using the barrel-endcap geometry barrel layers radii, one can easily deduce the corresponding angular deviations. Values are summarized in Table~\ref{tab:dev}
-
-\begin{table}[ht!]
-\centering
-\begin{tabular}{r|cccccc}
-  \hline\hline
-  Layer & 1 & 2 & 3 & 4 & 5 & 6\\
-  \hline
-  Radius (in m) & 0.23 & 0.384 & 0.524 & 0.699 & 0.874 & 1.08 \\
-	\hline
-  Deviation (in °) & 3.8 & 6.3 & 8.6 & 11.5 & 14.4 & 17.9 \\
-  \hline\hline
-\end{tabular}
-\caption{The angular deviation of a primary particle with the minimal $p_T$ of $2~GeV/c$.}
-\label{tab:dev}
-\end{table}
-
-\noindent From this result one can conclude that 36° in $r/\phi$ are sufficient to contain the trajectory of all charged particles with a $p_T$ larger than $2~GeV/c$ . We could thus divide the tracker area into overlapping sectors (e.g. 16 sectors of 45°), as shown on Fig.~\ref{fig:SEC_PHI}, and define one pattern bank per sector (which should be the same if the sectors are perfectly symetric in $r/\phi$) instead of a bank for the whole detector. 
+\noindent This value sets the minimal overlap needed between two neghbouring sectors if one wants each track to be contained into at least one sector. In the following we divided the tracker into 8 sectors covering each $60^{o}$ in $\phi$, with therefore $20^{o}$ overlap between two consecutive sectors. The resulting division is shown on Fig.~\ref{fig:SEC_PHI}.
 
 \begin{figure}[ht!]
-\begin{minipage}[t]{7.5cm}
 \centering
-\includegraphics[width=0.75\textwidth]{Plots/GeomSec.eps}
-\caption{Overlap between sectors using a geometric definition}
+\includegraphics[width=0.5\textwidth]{Plots/AzimuthCut.eps}
+\caption{\emph{Trigger sectors azimuthal division}}
 \label{fig:SEC_PHI}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{7.5cm}
-\centering
-\includegraphics[width=0.75\textwidth]{Plots/AdapSec.eps}
-\caption{Overlap between sectors using a module based definition}
-\label{fig:SEC_MOD}
-\end{minipage}
 \end{figure} 
 
-\noindent In practice, precise sector definition is slightly more complicated. Indeed one has to take into account modules granularity. A strict sector definition would be based on angular consideration only, and consequently contain only fraction of modules. Sticking to that definition would imply the ability to readout only some fraction of the modules. This is technically possible (a chip is 1/8th of a module), but would quickly become cumbersome to setup correctly. We have to keep in mind that the data will have to be sent to different trigger boards at very high rates, and cannot afford a complex cabling. The sector definition will therefore look like the one shown on Fig.~\ref{fig:SEC_MOD}.
+\noindent As one could see on Fig.~\ref{fig:SEC_PHI}, one has to take into account modules granularity into the sector definition. In the current simulation each sector is represented as a list of modules ID. These lists will be of particular importance for the definition of the FED to trigger boards mapping. Hopefully, once defined, they should be relatively stable along time. 
 
-\noindent For $\eta$, the situation is a bit more simpler as segmentation is thicker. In this study, we decided to divide each detector side into three $\eta$ regions:
-\begin{itemize}
-\item {\bf Barrel only:} for tracks with $0<\eta<0.9$.
-\item {\bf Barrel+Endcap:} for tracks with $0.85<\eta<1.4$.
-\item {\bf Endcap only:} for tracks with $1.35<\eta<2.2$. 
-\end{itemize}  
-
-\noindent For the $\phi$ part of the problem, the sectors were defined using two Monte Carlo samples of particle gun $\mu^{\pm}$ with a $p_T$ of $2~GeV/c$. The procedure is sketched in Fig~\ref{fig:sector_def}, and is the following:
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.6\columnwidth]{Plots/SectorDefinition.eps}
-\caption{The sector definition procedure.}
-\label{fig:sector_def}
-\end{figure}
+\includegraphics[width=0.9\textwidth]{Plots/EtaCut.eps}
+\caption{\emph{Trigger sectors pseudo-rapidity division}}
+\label{fig:SEC_ETA}
+\end{figure} 
 
-\begin{enumerate}
-\item We start from a module of the innermost layer we want to use in the trigger.
-\item We select all particles in both samples which are crossing that module.
-\item The sector is formed from all the modules crossed by the selected particles in the other layers. 
-\end{enumerate}  
+\noindent Using this configuration, we end up we 56 trigger sectors, 24 in the barrel, 16 in the endcaps, and 16 hybrids.
 
-\noindent For $\eta$ the procedure follows the same method, the particles are produced with $0<\eta<2.2$, $-15~cm<z_0<15~cm$ and $-1~mm<d_0<1~mm$.
+\subsubsection{Stub rates per sector in HL-LHC conditions}
 
-\noindent Using this topological procedure one defines larger sectors than using simple angular consideration, in particular in outer radii. The main advantage of this method is that as there is no overlap in the innermost layers, therefore all patterns are unique. The main disadvantage is that the overlaps in the outer layers are larger than with the angular solution. This could become a problem for data distribution. In any case, the bank generation procedure is the same for both sector types. 
+
+
+
 
 \subsection{Patterns definition and generation}
 
