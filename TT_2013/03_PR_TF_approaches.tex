@@ -2,57 +2,57 @@
 
 \subsection{Introduction to associative memory approach}
 
+\noindent The CDF SVT-style associative memory approach, later adopted for FTK, consists of two sequential steps of increasing resolution.  In step 1, pattern recognition is carried out by a dedicated device called the Associative Memory (AM) which finds track candidates in coarse resolution roads.  When a road has stubs on all layers or all except one, step 2 is carried out in which the full resolution hits within the road are fit to determine the track helix parameters and a goodness of fit.  Tracks that pass a  2 cut are kept.  If there are hits in all layers and the  2 fails the cut but is not extremely large, the track is refit a number of times with the hit on one of the layers dropped each time.  This "majority recovery" allows for the loss of a single hit/stub due to detector inefficiency with a random hit picked up instead. 
+
+\noindent Note that there has been more than a decade of experience in HEP with this approach from both CDF and Atlas, though all with silicon-based tracking trigger for Level 2 where trigger latency requirement is much more relaxed.  Therefore, one of the key issues for L1 implementation or demonstration will be the overall tracking trigger latency. Both the pattern recognition at the AM stage (hits delivery) and track fitting stage will have to be fast enough.
+
+
 \subsubsection{From pattern recognition to track fitting}
 
-\noindent Using associative memories in order to perform a fast pattern recognition (PR) at the trigger stage was first exposed in Ref.~\cite{bib:Del-89}. The principle is sketched in Fig.~\ref{fig:AM_principle}:
+\noindent The pattern recognition step is usually the most time consuming task, because one needs to test many combinations of hits to find those that potentially come from the same track and typically these tests are done sequentially (e.g. in software). The associative memory approach allows the testing of all hit combinations in parallel against a set of known patterns. To illustrate the concept of patterns in the associative memory approach, one can use an oversimplified case with a simple detector consisting of six detector layers, as shown in Fig.~\ref{fig:AM_principle_1}. A charged track crossing the detector would produce a set of hits (pattern). A finite set of distinct patterns can be generated this way using valid tracks for a given experiment, and such sets are often called the pattern bank. 
+
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.7\columnwidth]{Plots/TriggerAM.eps}
-\caption{Pattern recognition using associative memories.}
-\label{fig:AM_principle}
+\includegraphics[width=0.4\columnwidth]{Plots/AM_pple2.eps}
+\caption{Tracks in a tracking detector}
+\label{fig:AM_principle_1}
 \end{figure}
 
-\noindent The idea is to compare the hits recorded in the tracking system to a bank of patterns stored in an associative memory chip. The patterns could be seen as low-granularity tracks, they are defined once for all using Monte-Carlo events, and they are ideally covering all the possible tracks occuring in the detector. In this part we will concentrate ourselves on the pattern bank definition. This is indeed the central point of the PR stage. The bank, which is defined using simulated events, has to fulfill few requirements. Before presenting them, it's important to define some parameters. 
+\noindent The Associative Memory (AM) architecture is based on Content Addressable Memory (CAM) cells~\cite{bib:Koh-87,bib:Pag-06} to efficiently identify track patterns (roads) at high speed using coarse-resolution 'hits' recorded in the tracking detector. A block diagram~\cite{bib:Rist-89} of the Associative Memory architecture is shown in Fig. 2 (for a case with four detector layers).  Each pattern (shown as a cell) is composed of four hit coordinates each of which is stored in the CAM word for a given layer, and only four patterns (cell 0 to 3) are shown in Fig.~\ref{fig:AM_principle_2}. 
 
-\noindent A pattern can be defined as a road in the sector. Each road may contain one or more tracks, as shown on the Fig.~\ref{fig:pattern}. 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.3\columnwidth]{Plots/Pattern.eps}
-\caption{A pattern in a three-layers detector. Green tracks will match the pattern, red tracks won't.}
-\label{fig:pattern}
+\includegraphics[width=0.9\columnwidth]{Plots/AM_pple.eps}
+\caption{A block diagram on an associative memory chip. The CAM cells are shown as white (or yellow) boxes. The majority/glue logic is shown to the right as semi-circles.}
+\label{fig:AM_principle_2}
 \end{figure}
 
-\noindent On this picture one also get an idea of the pattern structure. Each pattern is made of one superstrip per layer. A superstrip is a group of strips/pixels, and is therefore heavily constrained by the detector itself. Once the superstrip definition has been set, its position information is coded in a N-bits word: the superstrip address. It is important to realize that the AM-based pattern recognition is using these addresses, and is therefore completely independent from the detector geometry.
+\noindent An incoming hit from a given detector layer is transmitted to the corresponding layer and the hit coordinate is compared against the stored words for all patterns in parallel for that layer. Any match to each incoming hit will be latched for that layer an
+d for that pattern until reset (to rearm for next event). This process is repeated for all the incoming hits for each detector layer as the hits arrive one after the other. As soon as all hits from the same event are received, the hit matching stage is done and all latched matches for each pattern (or cell) will be fed into a majority logic stage where a fired road will be found if the number of matched layers reaches a programmable threshold. 
+ 
 
-\noindent As the addresses are transmitted to the AM independently for each layer, layer number doesn't have to be in the address word. In order to understand the address definition, Fig.~\ref{fig:sstrip_def} shows how a superstrip is defined in the barrel part of the tracker.  
+\noindent Associative Memory is sometimes called PRAM, Pattern Recognition Associative Memory. The AM method solves the combinatorial challenge inherent to the pattern recognition by exploiting massive parallelism of associative memories that can compare tracking detector hits to a set of pre-calculated patterns simultaneously. The found patterns or "fired roads" are then processed using fast FPGAs to perform track fitting with full detector resolution using all combinations of the "hits of interest" from the fired roads. Because each pattern or road is narrow enough, the usual helical fit can be replaced by a simple linear calculation. The track fitting stage for each matched pattern is much simplified and can be very fast~\cite{bib:Ann-09}.
+
+\subsection{Sector, superstrip, and pattern banks}
+
+\noindent The pattern generation procedure starts by identifying first the sectors, which consists of one silicon module in each detector/logical layer. The list of sectors is determined with a training procedure that uses a large number of single muon (negative and positive) events, to cover all possible combinations of modules compatible with tracks coming from a region around the nominal beam spot position. The concept of sector is important because it is the region in which the linear track fit with one set of constants is performed (see later track fitting stage).
+
+\noindent Each pattern is made of one superstrip per layer. A superstrip is a group of strips/pixels, and is therefore heavily constrained by the detector itself. Once the superstrip definition has been set, its position information is coded in a N-bits word: the superstrip address. It is important to realize that the AM-based pattern recognition is using these addresses, and is therefore independent from the detector geometry. As the addresses are transmitted to the AM independently for each layer, layer number doesn't have to be in the address word. 
+
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.7\columnwidth]{Plots/SStripDef.eps}
+\includegraphics[width=0.8\columnwidth]{Plots/SStripDef.eps}
 \caption{Geometric definition of a superstrip (barrel example).}
-\label{fig:sstrip_def}
+\label{fig:Det_to_SS}
 \end{figure}
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.7\columnwidth]{Plots/SSaddress.eps}
+\includegraphics[width=0.6\columnwidth]{Plots/SSaddress.eps}
 \caption{Address definition of a superstrip.}
-\label{fig:SS_code}
+\label{fig:SS_def}
 \end{figure}
 
-\noindent One has to be able to define a unique address to define the $z (resp. r)/\phi$ position of each superstrip in the barrel (resp. endcap) sector (r (resp. z) is given by the layer (resp. disk). The coding is sketched on Fig.~\ref{fig:SS_Code}. The number of bits necessary reflects the superstrip granularity and is constrained by the maximal word size acceptable by the AM chip (currently 16 bits). A first set of bits provides the module number along the corresponding coordinate: 5 bits for $Z$ (one could have up to 24 modules in Z in one sector) and 4 for $\phi$ (up to 11 modules per sector in the outermost layer). Then, for each coordinates, a second serie of bits provide the superstrip position within the module. Fig.~\ref{fig:sstrip_def} shows a tracker strip module (in green), divided into 2 segments in $Z$ and 1024 strip in $\phi$. Therefore in order to describe all the position, one would need only 1 bit for $Z$, and 10 bits for $\phi$. In practice, a certain number of strips are grouped to form the superstrip, in our case 32, thus leading to 5 in the address.   
-
-\noindent For the endcap the coding is the same. z is just replaced by r (equivalence is made between disks and layers, ladders and rings). 
-
-\subsection{System configuration}
-
-\subsubsection{Trigger sectors definition}
-
-
-\noindent The trigger definition is driven by two concurent constraints. As we will see later, the number of patterns will strongly depend on the sector size itself. It is therefore tempting to divide the detector into very small sectors, in order to work with small, easier to handle, banks. On the other hand, however, the minimal sector size will be geometrically constrained by the track trigger requirements. The system should indeed be able to detect tracks over a given $p_T$ threshold. The minimal sector should thus be able to entirely contain such tracks. For example, with a threshold of $2~GeV/c$, the minimal sector size is approximatively $18^{o}$.
-
-\noindent This value sets the minimal overlap needed between two neghbouring sectors if one wants each track to be contained into at least one sector. In the following we divided the tracker into 8 sectors covering each $60^{o}$ in $\phi$, with therefore $20^{o}$ overlap between two consecutive sectors. The resulting division is shown on Fig.~\ref{fig:SEC_PHI}.
-
-
-\subsubsection{Definition of the pattern banks used}
+\noindent In order to understand the address definition, Fig.~\ref{fig:Det_to_SS} shows how a superstrip is defined in the barrel part of the tracker. Figure~\ref{fig:SS_def} shows the address definition of a superstrip. The number of bits necessary reflects the superstrip granularity and is constrained by the maximal word size acceptable by the AM chip (default is 15 bits). A first set of bits provides the module number along the corresponding coordinate: 5 bits for Z (one could have up to 24 modules in Z in one sector) and 4 for ? (up to 11 modules per sector in the outermost layer). Then, for each coordinates, a second series of bits provide the superstrip position within the module. Fig. 6 shows a tracker strip module (in green), divided into 2 segments in Z and 1024 strip in ?. Therefore in order to describe all the position, one would need only 1 bit for Z, and 10 bits for ?. In practice, a certain number of strips are grouped to form the superstrip, in our case 32, thus leading to 5 in the address. For the endcap the coding is the same, with z being replaced by r (equivalence is made between disks and layers, ladders and rings). 
 
 
 

@@ -1,0 +1,102 @@
+\documentclass{cmspaper}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{amsmath}
+%\usepackage{draft}
+\usepackage{lineno}
+\usepackage[table]{xcolor}
+\usepackage{url}
+
+\linenumbers % For draft version
+
+%----------------------------------------
+% On insère ici les différentes parties du rapport 
+%----------------------------------------
+
+\begin{document}
+
+\begin{titlepage}
+\internalnote{IN-2013/XXX}
+%\cmsnote{2007/000}
+\date{\today}
+\title{System Architecture for CMS L1 Tracking Trigger and work plan for Vertical Slice System Demonstration}
+\begin{Authlist}
+%G.~Baulieu~\Aref{a}, C.~Combaret~\Aref{a}, R.~Dell~Orso~\Aref{b}, T.~Liu~\Aref{c}, L.~Martini~\Aref{b}, L.~Mirabito~\Aref{a}, F.~Palla~\Aref{b}, S.~Viret~\Aref{a}
+\end{Authlist}
+
+%\Anotfoot{a}{Institut de Physique Nucl\'eaire, UCBL, CNRS-IN2P3, Lyon, France}
+%\Anotfoot{b}{INFN, Pisa, Italy}
+%\Anotfoot{c}{Fermilab, USA}
+
+\begin{abstract}
+In this document we will describe a track trigger architecture and system demonstration as a proposal for Phase 2 tracking trigger R\&D for CMS. This will be a living document, serving multiple purposes. It is intended to define the tracking trigger project and organize the efforts towards the Technical Proposal, the Vertical Slice Demonstration System, and the TDR (Technical Design Report). It will be written in such a way to make it easy not only for new groups to learn, but also to communicate with all the relevant tracker, trigger and physics groups.
+\end{abstract}
+\end{titlepage}
+\newpage
+\tableofcontents
+\newpage
+
+%
+% Uncomment the part you are interested in 
+%
+
+\input{00_Summary}
+\input{01_Intro}
+\input{02_Overview}
+\input{03_PR_TF_approaches}
+\input{04_Simulation}
+\input{05_Performances_Requirements}
+\input{06_Demonstrator}
+\input{07_Organization}
+\input{08_Conclusion}
+
+
+%----------------------------------------
+% Pour la bibliographie
+%----------------------------------------
+
+\newpage
+\thispagestyle{empty}
+
+\begin{thebibliography}{99}
+
+%\bibitem{bib:Abb-11} D.~Abbaneo {\it for the CMS collaboration} - {\it "Upgrade of the CMS Tracker with tracking trigger"} - CMS CR -2011/284 (2011)
+
+\bibitem{bib:Rist-89} M. Dell Orso, L. Ristori - {\it "VLSI Structure For Track Finding"} - Nucl.Instr. and Meth. A278 (1989), 436
+
+\bibitem{bib:Ade-06} J. Adelman {\it et al.} - {\it "Real time secondary vertexting at CDF"} - Nucl.Instr. and Meth. A569 (2006), 111
+
+\bibitem{bib:Ade-07} J. Adelman {\it et al.} - {\it "The Silicon Vertex Trigger upgrade at CDF"} - Nucl.Instr. and Meth. A572 (2007), 361
+
+\bibitem{bib:Koh-87} T. Kohonen - {\it "Content-Addressable Memories"} - 2nd edition, New York, Springer- Verlag (1987)
+
+\bibitem{bib:Pag-06} K. Pagiamtzis, A. Sheikholeslami - {\it "Content-Addressable Memory (CAM) Circuits and Archtectures: A Tutorial and Survey"} - IEEE Journal of Solid-State Circuits, Vol. 41, No. 3 (2006), 712
+
+
+%\bibitem{bib:XML_wiki}\url{https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideGeomDevelopersGuide}
+
+%\bibitem{bib:XML_oscar}\url{https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideOscarProducer}
+
+%\bibitem{bib:G4SHits_cfi}\url{http://cmssw.cvs.cern.ch/cgi-bin/cmssw.cgi/CMSSW/SimG4Core/Application/python/g4SimHits_cfi.py?view=markup}
+
+\bibitem{bib:Ann-06} A. Annovi {\it et al.} - {\it "A VLSI Processor for Fast Track Finding Based on Content Addressable Memories"} - IEEE Transactions on Nuclear Science, vol. 53, no. 4 (2006), 1
+
+\bibitem{bib:Ann-09} A. Annovi {\it et al.} - {\it "The GigaFitter: A next generation track fitter to enhance online tracking performances at CDF"} - Nuclear Science Symposium Conference Record (NSS/MIC), 2009 IEEE (2009), 1143
+
+\bibitem{bib:VIP-11}  - {\it "A New Concept of Vertically Integrated Pattern Recognition Associative Memory (VIPRAM)"} - FERMILAB-CONF-11-709-E, Proceedings of TIPP 2011 conference, Volume 37, 2012, Pages 1973
+
+\bibitem{bib:VIP-12}  - {\it "Development of 3D Vertically Integrated Pattern Recognition Associative Memory (VIPRAM)"} - FERMILAB-TM-2493-CMS-E-PPD-TD
+
+\bibitem{bib:FTK-10}  - {\it "FTK: A Hardware Track Finder for the ATLAS Trigger"} - Technical Proposal (2010)
+
+%\bibitem{bib:Kar-91} V.~Karimaki - {\it "Effective circle fitting for particle trajectories"} - Nucl.Instr. and Meth. A305 (1991), 187
+
+\end{thebibliography}
+%----------------------------------------
+% Annexes
+%----------------------------------------
+
+%\appendix
+
+
+\end{document}
