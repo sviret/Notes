@@ -33,7 +33,9 @@ d for that pattern until reset (to rearm for next event). This process is repeat
 
 \noindent Associative Memory is sometimes called PRAM, Pattern Recognition Associative Memory. The AM method solves the combinatorial challenge inherent to the pattern recognition by exploiting massive parallelism of associative memories that can compare tracking detector hits to a set of pre-calculated patterns simultaneously. The found patterns or "fired roads" are then processed using fast FPGAs to perform track fitting with full detector resolution using all combinations of the "hits of interest" from the fired roads. Because each pattern or road is narrow enough, the usual helical fit can be replaced by a simple linear calculation. The track fitting stage for each matched pattern is much simplified and can be very fast~\cite{bib:Ann-09}.
 
-\subsection{Sector, superstrip, and pattern banks}
+\subsection{Trigger Tower, Sector, superstrip, and pattern banks}
+
+\noindent We have described the concept of Trigger Tower in Section 2. Here we will describe the concept of sector, superstrip and pattern banks for the AM approach.
 
 \noindent The pattern generation procedure starts by identifying first the sectors, which consists of one silicon module in each detector/logical layer. The list of sectors is determined with a training procedure that uses a large number of single muon (negative and positive) events, to cover all possible combinations of modules compatible with tracks coming from a region around the nominal beam spot position. The concept of sector is important because it is the region in which the linear track fit with one set of constants is performed (see later track fitting stage).
 

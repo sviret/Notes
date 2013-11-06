@@ -1,0 +1,42 @@
+\contentsline {section}{\numberline {1}Introduction}{4}
+\contentsline {paragraph}{\bf The Challenges for tracking trigger at L1\\}{4}
+\contentsline {paragraph}{\bf On going R\&D activities at CMS\\}{5}
+\contentsline {section}{\numberline {2}CMS Track Trigger System Overview}{7}
+\contentsline {subsection}{\numberline {2.1}Overview}{7}
+\contentsline {subsection}{\numberline {2.2}Tracker-Trigger interface}{7}
+\contentsline {subsubsection}{\numberline {2.2.1}Block Synchronous Data Transfer scheme }{7}
+\contentsline {subsection}{\numberline {2.3}Track Trigger System Architecture}{7}
+\contentsline {subsubsection}{\numberline {2.3.1}Tracker geometry and Trigger Towers }{7}
+\contentsline {subsubsection}{\numberline {2.3.2}Formation of Trigger Towers}{8}
+\contentsline {subsubsection}{\numberline {2.3.3}System architecture}{9}
+\contentsline {subsubsection}{\numberline {2.3.4}Architecture/System Flexibility (optional reading)}{11}
+\contentsline {paragraph}{N DIB and M PRM configuration ($N+M \le 12$)}{11}
+\contentsline {paragraph}{DIB/PRB combo configuration}{11}
+\contentsline {section}{\numberline {3}Vertical Slice Demonstrator System}{14}
+\contentsline {subsection}{\numberline {3.1}Overview and methodology}{14}
+\contentsline {subsection}{\numberline {3.2}Data Source Stage}{14}
+\contentsline {subsection}{\numberline {3.3}Data Input}{14}
+\contentsline {subsection}{\numberline {3.4}Pattern Recognition Board}{15}
+\contentsline {subsection}{\numberline {3.5}Pattern Recognition Mezzanine Card}{15}
+\contentsline {subsection}{\numberline {3.6}PRAM and its Development}{16}
+\contentsline {subsection}{\numberline {3.7}Track Fitting stage}{17}
+\contentsline {subsection}{\numberline {3.8}Simulation efforts}{17}
+\contentsline {section}{\numberline {4}Work Breakdowns and Resources}{19}
+\contentsline {section}{\numberline {5}Conclusion}{21}
+\contentsline {section}{\numberline {A}Pattern recognition and track fitting approaches}{23}
+\contentsline {subsection}{\numberline {A.1}Introduction to associative memory approach}{23}
+\contentsline {subsubsection}{\numberline {A.1.1}From pattern recognition to track fitting}{23}
+\contentsline {subsection}{\numberline {A.2}Trigger Tower, Sector, superstrip, and pattern banks}{24}
+\contentsline {section}{\numberline {B}Simulation tool development}{26}
+\contentsline {subsection}{\numberline {B.1}The importance of simulation tools}{26}
+\contentsline {subsection}{\numberline {B.2}Tracker geometry and trigger tower definition}{26}
+\contentsline {subsection}{\numberline {B.3}Pattern bank generation}{26}
+\contentsline {subsection}{\numberline {B.4}Pattern recognition}{27}
+\contentsline {subsubsection}{\numberline {B.4.1}Software principle}{27}
+\contentsline {subsubsection}{\numberline {B.4.2}Estimation of the pattern recognition efficiencies and fake rates}{28}
+\contentsline {subsubsection}{\numberline {B.4.3}Bank efficiency definition}{29}
+\contentsline {subsection}{\numberline {B.5}Further developments and improvements}{29}
+\contentsline {section}{\numberline {C}Track Trigger Performance Requirements}{30}
+\contentsline {subsection}{\numberline {C.1}Tracking performance}{30}
+\contentsline {subsection}{\numberline {C.2}Performance on trigger objects}{30}
+\contentsline {subsection}{\numberline {C.3}Selected physics cases}{30}

@@ -12,11 +12,7 @@
 
 \subsubsection{Block Synchronous Data Transfer scheme }
 
-\noindent The found stubs are sent from the modules using a block synchronous data transfer scheme, which tolerates random occupancy fluctuations while bonding latency. Current plan is to have the data from 8 consecutive beam crossings as one block. The front-end designers are still investigating different format variants for robustness against rate fluctuations, ease of implementation, impact on power consumption etc. While choosing the 8 crossings scheme as our current working assumption, our strategy is to design the downstream components to be flexible enough to handle different possible formats.
-
-\subsubsection{Relevant design studies}
-
-\noindent There are many studies we still need to do to understand the system requirements much beyond data transfer. Will make a list here soon (such as actual stub distribution at module output level, zero suppression scheme and data formatting, at input to the pattern recognition engine after the block transfer, and what's the maximal stub occupancy the system should handle etc).
+\noindent The found stubs are sent from the modules using a block synchronous data transfer scheme, which tolerates random occupancy fluctuations while bonding latency. Current plan is to have the data from 8 consecutive beam crossings as one block. The front-end designers are still investigating different format variants for robustness against rate fluctuations, ease of implementation, impact on power consumption etc. While choosing the 8 crossings scheme as our current working assumption, our strategy is to design the downstream components to be flexible enough to handle different possible formats. There are many studies we still need to do to understand the system requirements much beyond data transfer. 
 
 \subsection{Track Trigger System Architecture}
 
@@ -32,7 +28,7 @@
 \end{figure}
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.4\columnwidth]{Plots/SecDef_XY.eps}
+\includegraphics[width=0.45\columnwidth]{Plots/SecDef_XY.eps}
 \caption{Eight sectors in phi}
 \label{fig:SecDef_XY}
 \end{figure}
@@ -52,7 +48,7 @@
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.6\columnwidth]{Plots/TT_config.eps}
+\includegraphics[width=0.5\columnwidth]{Plots/TT_config.eps}
 \caption{Conceptual view of the proposed CMS phase II L1 tracking trigger towers.  The formation is organized as 48 trigger towers (6 $\eta$ x 8 $\phi$).  Because the phase II tracker is being designed for tracking trigger purposes, it is possible to arrange the towers in such a way that data sharing only requires communication with immediate neighbor towers.  Each node in this diagram represents a trigger tower processor engine.  Within each processor engine crate the full mesh backplane is used for time multiplexing of the incoming data, while the data sharing between towers is handled with inter-crate fiber links.}
 \label{fig:TT_config}
 \end{figure}
@@ -68,7 +64,7 @@
 
 \subsubsection{System architecture}
 
-\noindent The tower processor platform must support large numbers of fiber transceivers, which are used for receiving input links and sharing data between neighboring towers.  A flexible, high bandwidth backplane is also required to quickly transfer data between boards.  The boards should be large enough to support AM chip arrays and fiber connections.  Given these requirements, we conclude that a full mesh 14 slot ATCA shelf is a natural fit for the tower processor.  Therefore we propose a L1 Tracking Trigger system comprised of 49 ATCA shelves, one shelf per trigger tower with an additional shelf acting as a second stage processor, as shown on Fig.~\ref{fig:System_1}. Connections between tower processor shelves are limited to eight nearest neighbors.
+\noindent The tower processor platform must support large numbers of fiber transceivers, which are used for receiving input links and sharing data between neighboring towers.  A flexible, high bandwidth backplane is also required to quickly transfer data between boards.  The boards should be large enough to support AM chip arrays and fiber connections.  Given these requirements, we conclude that a full mesh 14 slot ATCA shelf is a natural fit for the tower processor.  Therefore we propose a L1 Tracking Trigger system comprised of 49 ATCA shelves, one shelf per trigger tower with an additional shelf acting as a second stage processor, as shown on Figs.~\ref{fig:System_1} and~\ref{fig:System_2} . Connections between tower processor shelves are limited to eight nearest neighbors.
 
 \begin{figure}[ht!]
 \centering
@@ -77,13 +73,27 @@
 \label{fig:System_1}
 \end{figure}
 
-\noindent The fundamental baseline processing element is a pattern recognition mezzanine (PRM) card which consists of an AM chip array, where coarse roads are found, and an FPGA which performs the final track fitting. Time multiplexed data transfers into several parallel PRMs are required to reduce bandwidth to manageable levels.
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.7\columnwidth]{Plots/System_2.eps}
+\caption{The second processing stage shelf}
+\label{fig:System_2}
+\end{figure}
+
+\noindent The fundamental baseline processing element is a pattern recognition mezzanine (PRM) card shown on Fig.~\ref{fig:PRAM} which consists of an AM chip array, where coarse roads are found, and an FPGA which performs the final track fitting. Time multiplexed data transfers into several parallel PRMs are required to reduce bandwidth to manageable levels.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.4\columnwidth]{Plots/PRAM.eps}
+\caption{Pattern recognition mezzanine}
+\label{fig:PRAM}
+\end{figure}
 
 \noindent An ATCA shelf is typically an air-cooled 13U rack mounted chassis consisting of 14 slots.  The first two slots are reserved for Ethernet switch blades.  Switch blades may include a fast CPU and are often used for controls and other system functions.  The remaining 12 slots are used for processor or payload blades.  In a full mesh ATCA backplane each pair of slots is directly connected with a multi-lane bidirectional serial channel capable of supporting sustained 40 Gbps data transfers.  A modern "40G" full mesh ATCA shelf has a total aggregate bandwidth of over 7 Tbps, not including external I/O.
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.45\columnwidth]{Plots/ProcBlade.eps}
+\includegraphics[width=0.4\columnwidth]{Plots/ProcBlade.eps}
 \caption{Generic processor blade}
 \label{fig:ProcBlade}
 \end{figure}
@@ -94,13 +104,18 @@
 
 \noindent A major advantage of the full mesh backplane is that it effectively blurs the distinction between boards, thus enabling system architects to experiment with different shelf configurations.  Components can be roughly categorized into functional blocks such as input link receivers, AM array processors, inter-crate gateways, and output formatters.  While these functional blocks usually represent different boards in the crate it is important to note that the architecture is flexible enough to accommodate multiple functions in a single board.  In the following sections we briefly illustrate two kinds of tower processor systems made possible by the flexibility of the full mesh architecture.
 
-\paragraph{N DIB and M PRM configuration (N+M <= 12)}
+\paragraph{N DIB and M PRM configuration ($N+M \le 12$)}
 
 \noindent The most straightforward tower processor architecture consists of N data input boards (DIB), which receive input links and perform zero suppression.  A DIB may be built using the generic ATCA processor blade (Figure~\ref{fig:ProcBlade}) if the data is coming from FEDs.  It may also be possible to use a generic ATCA carrier board and several FED AMC mezzanines directly [ref] if FED AMC card will include the DIB functionality (to pass the data for L1 track trigger to PRBs).  After zero suppression, the N DIBs transfer the event data to M number of pattern recognition boards (PRB), which contain Mx4 pattern recognition mezzanine (PRM) cards.  Data transfers from the DIBs to the PRMs are time multiplexed, thereby reducing the bandwidth requirements to acceptable levels.  
 
-\noindent Data entering the PRB can be time multiplexed again and transferred to the four PRMs to reduce bandwidth requirements and allow for longer processing times.  The full mesh backplane fabric supports any variant of these configuration (assuming of course that N+M<=12), and different variant may have different demands on hardware. Several different variations are summarized in the table below: (not sure if should show this level of details in this version).
+\noindent Data entering the PRB can be time multiplexed again and transferred to the four PRMs to reduce bandwidth requirements and allow for longer processing times.  The full mesh backplane fabric supports any variant of these configuration (assuming of course that N+M<=12), and different variant may have different demands on hardware. Several different variations are sketched on Fig.\ref{fig:System_3} and summarized in Table~\ref{tab:shelves} (not sure if should show this level of details in this version).
 
-
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.7\columnwidth]{Plots/System_3.eps}
+\caption{System flexibility: many configurations possible \& being studied to select the right one for demonstration purpose}
+\label{fig:System_3}
+\end{figure}
 
  
 
@@ -115,7 +130,7 @@ DIB/PRB/PRM Count	Fabric Channel BW (minimum)	Latency
 
 \noindent Data sharing between towers occurs on the PRB board level.  Each PRB connects to the corresponding PRB in the eight nearest tower processor shelves.  The above numbers assume 500 32-bit stubs per event (every 25 ns).  An example of special configuration with eight DIBs and four PRBs will be used as a simple example in Section 3.
 
-\paragraph{DIB/PRB combined configuration}
+\paragraph{DIB/PRB combo configuration}
 
 \noindent In the limit of N=0 and M=12 from the "N DIB and M PRB" configuration, the DIB and PRB functionalities can be combined into one blade design, shown in Figure~\ref{fig:CombBlade}.
 
@@ -131,7 +146,7 @@ DIB/PRB/PRM Count	Fabric Channel BW (minimum)	Latency
 
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=0.85\columnwidth]{Plots/BackPlaneTr.eps}
+\includegraphics[width=0.9\columnwidth]{Plots/BackPlaneTr.eps}
 \caption{Backplane transfers sequences using the combined blade design. First, the input fibers are received on the Processor blades (a).  Each Processor blade then transfers a portion of the input data to the Gateway blade (b), where it is exchanged with neighboring towers over fiber links (c).  The Processor blades and Gateway blade transfer the event (including neighbor data) to the target Processor blade in a time multiplexed, round robin scheme (d).   Results from the Processor blades are then transferred to the Collector blade (e) for any final formatting and processing before transmission downstream (f).}
 \label{fig:BackPlaneTr}
 \end{figure}
